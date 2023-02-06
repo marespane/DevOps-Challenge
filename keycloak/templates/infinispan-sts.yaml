@@ -40,7 +40,11 @@ spec:
             mountPath: /cockroach-certs/
       containers:
       - args:
+        # - 'sleep 2000000'
         - /opt/infinispan/bin/server.sh
+        command:
+          - "/bin/sh"
+          - "-c"
         env:
 {{- include "envs" . | indent 8 }}
         - name: POD_IP
@@ -87,9 +91,9 @@ spec:
           - mountPath: /opt/infinispan/server/conf/infinispan.xml
             name: config-volume
             subPath: infinispan.xml
-          - mountPath: /opt/infinispan/server/lib/postgresql-42.2.19.jar
+          - mountPath: /opt/infinispan/server/lib/postgresql.jar
             name: postgresql-volume
-            subPath: postgresql-42.2.19.jar
+            subPath: postgresql-42.5.1.jar
       restartPolicy: {{ .Values.restartPolicy }}
       {{- with .Values.infinispan.affinity }}
       affinity:

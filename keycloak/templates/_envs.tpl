@@ -15,23 +15,23 @@
 - name: DB_VENDOR
   value: "postgres"
 - name: DB_USER
-  value: "keycloak"
+  value: "postgres"
 - name: DB_PASSWORD
   value: "{{ .Values.db.password }}"
 - name: DB_ADDR
   value: "{{ .Values.db.host }}"
 - name: DB_PORT
-  value: "26257"
+  value: "{{ .Values.db.port }}"
 - name: DB_DATABASE
   value: "keycloak"
 - name: PROXY_ADDRESS_FORWARDING
   value: "true"
 - name: JDBC_PARAMS
-  value: "sslmode=verify-ca&sslcert=/cockroach-certs/client.keycloak.crt&sslkey=/cockroach-certs/client.keycloak.pk8&sslrootcert=/cockroach-certs/ca.crt"
+  value: "sslmode=disable&sslcert=/cockroach-certs/client.keycloak.crt&sslkey=/cockroach-certs/client.keycloak.pk8&sslrootcert=/cockroach-certs/ca.crt"
 - name: JDBC_PARAMS_IS
-  value: "?sslmode=verify-ca&sslcert=/cockroach-certs/client.keycloak.crt&sslkey=/cockroach-certs/client.keycloak.pk8&sslrootcert=/cockroach-certs/ca.crt"
+  value: "?sslmode=disable&sslcert=/cockroach-certs/client.keycloak.crt&sslkey=/cockroach-certs/client.keycloak.pk8&sslrootcert=/cockroach-certs/ca.crt"
 - name: INFINISPAN_SERVER
-  value: "{{ pluck .Values.global.env .Values.infinispan.host | first | default (printf .Values.infinispan.host._default .Values.global.env) }}"
+  value: "infinispan-server"
 - name: JAVA_OPTS
-  value: "{{ pluck .Values.global.env .Values.java | first | default .Values.java._default }}"
+  value: "{{ .Values.java._default }}"
 {{- end }}

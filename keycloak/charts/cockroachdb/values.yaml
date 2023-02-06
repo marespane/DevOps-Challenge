@@ -1,7 +1,7 @@
 # Generated file, DO NOT EDIT. Source: build/templates/values.yaml
 image:
   repository: cockroachdb/cockroach
-  tag: v22.2.3
+  tag: v22.2.0
   pullPolicy: IfNotPresent
   credentials: {}
     # registry: docker.io
@@ -342,7 +342,7 @@ storage:
   persistentVolume:
     enabled: true
 
-    size: 100Gi
+    size: 5Gi
 
     # If defined, then `storageClassName: <storageClass>`.
     # If set to "-", then `storageClassName: ""`, which disables dynamic
@@ -405,9 +405,15 @@ init:
     users:
       - name: keycloak
         password: pass123
+        options: [LOGIN,MODIFYCLUSTERSETTING,VIEWACTIVITY,VIEWCLUSTERSETTING,CREATEDB,CREATELOGIN,CREATEROLE]
+      - name: root
+        password: pass123
     #   # https://www.cockroachlabs.com/docs/stable/create-user.html#parameters
     #   options: [LOGIN]
-    databases: []
+    databases:
+      - name: keycloak
+        owners:
+         - keycloak
     # - name:
     #   # https://www.cockroachlabs.com/docs/stable/create-database.html#parameters
     #   options: [encoding='utf-8']

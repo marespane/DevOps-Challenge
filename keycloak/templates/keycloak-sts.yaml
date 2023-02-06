@@ -55,6 +55,22 @@ spec:
             mountPath: /cockroach/
           - name: converted-certs
             mountPath: /cockroach-certs/
+      - name: configuration
+        image: jboss/keycloak:12.0.4
+        command:
+          - "/bin/sh"
+          - "-c"
+        args:
+          - "cp  /opt/jboss/keycloak/standalone/configuration/* /standalone-configuration-dir"
+        volumeMounts:
+         - name: standalone
+           mountPath: /opt/jboss/keycloak/standalone/configuration/standalone-ha.xml
+           subPath: standalone.xml
+         - name: standalone
+           mountPath: /opt/jboss/keycloak/standalone/configuration/standalone-ha.xml.tmp
+           subPath: standalone.xml
+         - name: standalone-configuration-dir
+           mountPath: /standalone-configuration-dir
       containers:
         - name: keycloak
           lifecycle:
@@ -131,9 +147,11 @@ spec:
               mountPath: /cockroach/
             - name: converted-certs
               mountPath: /cockroach-certs/
+            - name: standalone-configuration-dir
+              mountPath: /opt/jboss/keycloak/standalone/configuration/
             - name: standalone
-              mountPath: /opt/jboss/keycloak/standalone/configuration/standalone-ha.xml
-              subPath: standalone.xml
+              mountPath: /opt/jboss/keycloak/standalone/configuration/logging.properties
+              subPath: logging.properties
             - name: keycloak-model-jpa-jar-volume
               mountPath: /opt/jboss/keycloak/modules/system/layers/keycloak/org/keycloak/keycloak-model-jpa/main/keycloak-model-jpa-12.0.4.jar
               subPath: keycloak-model-jpa-12.0.4.jar
@@ -203,4 +221,8 @@ spec:
                   path: client.keycloak.key
                   mode: 0400
         - name: converted-certs
+          emptyDir: {}
+        ### Mitigated issue https://github.com/jboss-dockerfiles/wildfly/issues/70 with  
+        ### Failed to rename temp file /opt/jboss/keycloak/standalone/configuration/standalone-ha.xml.tmp to /opt/jboss/keycloak/standalone/configuration/standalone-ha.xml
+        - name: standalone-configuration-dir
           emptyDir: {}

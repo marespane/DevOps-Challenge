@@ -2,9 +2,11 @@
 global:
   env: development
 db:
-  host: "keycloak-cockroachdb-public"
-  password: "pass123"
-  
+  host: "my-release-postgresql"
+  password: "SKEm7XKaDV"
+  port: 5432
+  #port: 26257
+
 
 keycloak:
   password:
@@ -45,7 +47,7 @@ ingress:
     production: example.com
 
 java:
-  _default: "-server -Xms64m -Xmx512m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman --add-exports=java.base/sun.nio.ch=ALL-UNNAMED --add-exports=jdk.unsupported/sun.misc=ALL-UNNAMED --add-exports=jdk.unsupported/sun.reflect=ALL-UNNAMED -Djava.awt.headless=true -Djboss.default.jgroups.stack=kubernetes -Djboss.node.name=${POD_NAME} -Djboss.tx.node.id=${POD_NAME} -Djboss.site.name=${POD_NAMESPACE} -Dkeycloak.profile.feature.admin_fine_grained_authz=enabled -Dkeycloak.profile.feature.token_exchange=enabled -Djboss.default.multicast.address=230.0.0.5 -Djboss.modcluster.multicast.address=224.0.1.106 -Djboss.as.management.blocking.timeout=3600"
+  _default: "-server -Xms64m -Xmx512m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman --add-exports=java.base/sun.nio.ch=ALL-UNNAMED --add-exports=jdk.unsupported/sun.misc=ALL-UNNAMED --add-exports=jdk.unsupported/sun.reflect=ALL-UNNAMED -Djava.awt.headless=true -Djboss.default.jgroups.stack=kubernetes -Djboss.node.name=${POD_NAME} -Djboss.tx.node.id=${POD_NAME} -Djboss.site.name=${POD_NAMESPACE} -Dkeycloak.profile.feature.admin_fine_grained_authz=enabled -Dkeycloak.profile.feature.token_exchange=enabled -Djboss.as.management.blocking.timeout=3600"
   production: "-server -Xms1024m -Xmx2048m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true  --add-exports=java.base/sun.nio.ch=ALL-UNNAMED --add-exports=jdk.unsupported/sun.misc=ALL-UNNAMED --add-exports=jdk.unsupported/sun.reflect=ALL-UNNAMED  -Djboss.as.management.blocking.timeout=3600 -Djboss.default.jgroups.stack=kubernetes -Djboss.node.name=${POD_NAME} -Djboss.tx.node.id=${POD_NAME} -Djboss.site.name=${POD_NAMESPACE} -Dkeycloak.profile.feature.admin_fine_grained_authz=enabled -Dkeycloak.profile.feature.token_exchange=enabled -Djboss.default.multicast.address=230.0.0.5 -Djboss.modcluster.multicast.address=224.0.1.106"
 
   # Optionally override the fully qualified name
@@ -145,9 +147,11 @@ args: []
 # Additional environment variables for Keycloak
 extraEnv: |
    - name: KEYCLOAK_LOGLEVEL
-     value: INFO
+     value: DEBUG
    - name: WILDFLY_LOGLEVEL
-     value: INFO
+     value: DEBUG
+   - name: ROOT_LOGLEVEL
+     value: DEBUG
    - name: CACHE_OWNERS_COUNT
      value: "2"
    - name: CACHE_OWNERS_AUTH_SESSIONS_COUNT
@@ -343,7 +347,7 @@ postgresql:
   # PostgreSQL User to create
   postgresqlUsername: keycloak
   # PostgreSQL Password for the new user
-  postgresqlPassword: keycloak
+  postgresqlPassword: pass123
   # PostgreSQL Database to create
   postgresqlDatabase: keycloak
   # Persistent Volume Storage configuration
@@ -399,15 +403,3 @@ prometheusRule:
   #   for: 5m
   #   labels:
   #     severity: warning
-ca:
-  crt:
-    _default: base64_representation_of_ca.crt
-    production: base64_representation_of_ca.crt
-client:
-  keycloak:
-    key:
-      _default: base64_representation_of_client.key
-      production: base64_representation_of_client.key
-    crt:
-      _default: base64_representation_of_client.crt
-      production: base64_representation_of_client.crt

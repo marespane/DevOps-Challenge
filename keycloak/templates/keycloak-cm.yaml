@@ -5,6 +5,64 @@ metadata:
   labels:
     {{- include "keycloak.labels" . | nindent 4 }}
 data:
+  
+
+  logging.properties: |-
+        #
+        # This software is distributed in the hope that it will be useful,
+        # but WITHOUT ANY WARRANTY; without even the implied warranty of
+        # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+        # Lesser General Public License for more details.
+        #
+        # You should have received a copy of the GNU Lesser General Public
+        # License along with this software; if not, write to the Free
+        # Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA
+        # 02110-1301 USA, or see the FSF site: http://www.fsf.org.
+        #
+
+        # Additional loggers to configure (the root logger is always configured)
+        loggers=com.arjuna,io.jaegertracing.Configuration,org.jboss.as.config,sun.rmi
+
+        logger.level=DEBUG
+        logger.handlers=CONSOLE,FILE
+
+        logger.com.arjuna.level=DEBUG
+        logger.com.arjuna.useParentHandlers=true
+
+        logger.io.jaegertracing.Configuration.level=DEBUG
+        logger.io.jaegertracing.Configuration.useParentHandlers=true
+
+        logger.org.jboss.as.config.level=DEBUG
+        logger.org.jboss.as.config.useParentHandlers=true
+
+        logger.sun.rmi.level=DEBUG
+        logger.sun.rmi.useParentHandlers=true
+
+        handler.CONSOLE=org.jboss.logmanager.handlers.ConsoleHandler
+        handler.CONSOLE.level=DEBUG
+        handler.CONSOLE.formatter=COLOR-PATTERN
+        handler.CONSOLE.properties=autoFlush,target
+        handler.CONSOLE.autoFlush=true
+        handler.CONSOLE.target=SYSTEM_OUT
+
+        handler.FILE=org.jboss.logmanager.handlers.PeriodicRotatingFileHandler
+        handler.FILE.level=DEBUG
+        handler.FILE.formatter=PATTERN
+        handler.FILE.properties=autoFlush,append,fileName,suffix
+        handler.FILE.constructorProperties=fileName,append
+        handler.FILE.autoFlush=true
+        handler.FILE.append=true
+        handler.FILE.fileName=${org.jboss.boot.log.file:server.log}
+        handler.FILE.suffix=.yyyy-MM-dd
+
+        formatter.COLOR-PATTERN=org.jboss.logmanager.formatters.PatternFormatter
+        formatter.COLOR-PATTERN.properties=pattern
+        formatter.COLOR-PATTERN.pattern=%K{level}%d{HH\:mm\:ss,SSS} %-5p [%c] (%t) %s%e%n
+
+        formatter.PATTERN=org.jboss.logmanager.formatters.PatternFormatter
+        formatter.PATTERN.properties=pattern
+        formatter.PATTERN.pattern=%d{yyyy-MM-dd HH\:mm\:ss,SSS} %-5p [%c] (%t) %s%e%n
+
   standalone.xml: |-
     <?xml version='1.0' encoding='UTF-8'?>
     <server xmlns="urn:jboss:domain:14.0">
@@ -101,34 +159,34 @@ data:
                     </formatter>
                 </console-handler>
                 <logger category="com.arjuna">
-                    <level name="WARN"/>
+                    <level name="DEBUG"/>
                 </logger>
                 <logger category="io.jaegertracing.Configuration">
-                    <level name="WARN"/>
+                    <level name="DEBUG"/>
                 </logger>
                 <logger category="org.jboss.as.config">
                     <level name="DEBUG"/>
                 </logger>
                 <logger category="sun.rmi">
-                    <level name="WARN"/>
+                    <level name="DEBUG"/>
                 </logger>
                 <logger category="org.keycloak">
                     <level name="${env.KEYCLOAK_LOGLEVEL:INFO}"/>
                 </logger>
                 <logger category="org.keycloak.cluster.infinispan">
-                  <level name="INFO"/>
+                  <level name="DEBUG"/>
                 </logger>
                 <logger category="org.keycloak.connections.infinispan">
-                  <level name="INFO"/>
+                  <level name="DEBUG"/>
                 </logger>
                 <logger category="org.keycloak.models.cache.infinispan">
-                   <level name="INFO"/>
+                   <level name="DEBUG"/>
                 </logger>
                 <logger category="org.keycloak.models.sessions.infinispan">
-                  <level name="INFO"/>
+                  <level name="DEBUG"/>
                 </logger>
                 <root-logger>
-                    <level name="${env.ROOT_LOGLEVEL:INFO}"/>
+                    <level name="${env.ROOT_LOGLEVEL:DEBUG}"/>
                     <handlers>
                         <handler name="CONSOLE"/>
                     </handlers>
@@ -160,11 +218,6 @@ data:
                             <background-validation-millis>60000</background-validation-millis>
                         </validation>
                     </datasource>
-                    <drivers>
-                        <driver name="postgresql" module="org.postgresql.jdbc">
-                            <xa-datasource-class>org.postgresql.xa.PGXADataSource</xa-datasource-class>
-                        </driver>
-                    </drivers>
                 </datasources>
             </subsystem>
             <subsystem xmlns="urn:jboss:domain:deployment-scanner:2.0">
