@@ -31,7 +31,12 @@ k delete po keycloak-0
   * Tried different versions of Cockroachdb and drivers
   * Moved to Postgressql, left Cockroachdb for certificate generation
 * PostgresSQL helm chart doesn't create automatically database, I added init sql script like in https://stackoverflow.com/questions/55499984/postgresql-in-helm-initdbscripts-parameter but container crashes in that init stage.
-* It seems that keycloak is failing for some reason, I didn't found reason. I added DEBUG log configuration but still there are no obvious errors
+* It seems that Keycloak is failing for some reason, I didn't found reason. I added DEBUG log configuration but still there are no obvious errors. I'm guessing process is killed by OOM killer.
+
+# Improvements
+* Remove hardcoded values from helm charts
+* Add init containers which check if all services required by current pod are healthy. This is much cleaner than to wait for container to restart until all reqrements are met
+* Better organize helm charts under one umbrella chart so configuration important for us is visible in one values.yaml file
 
 # Conclusion
 
