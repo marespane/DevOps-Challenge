@@ -30,7 +30,10 @@ k delete po keycloak-0
 * Cockroachdb doesn't work with Infinispan due to "unauthorized to access tenant"
   * Tried different versions of Cockroachdb and drivers
   * Moved to Postgressql, left Cockroachdb for certificate generation
+* Keycloak error while using standalone.xml on mapped config file documented: https://github.com/jboss-dockerfiles/wildfly/issues/70
+  * Made it work by creating empty dir in pod and additional init container which copies content of config dir to it. Then mounted that empty dir to config dir location.
 * PostgresSQL helm chart doesn't create automatically database, I added init sql script like in https://stackoverflow.com/questions/55499984/postgresql-in-helm-initdbscripts-parameter but container crashes in that init stage.
+* Keykloak pod after restart errors out with: "User with username 'admin' already added to '/opt/jboss/keycloak/standalone/configuration/keycloak-add-user.json'"
 * It seems that Keycloak is failing for some reason, I didn't found reason. I added DEBUG log configuration but still there are no obvious errors. I'm guessing process is killed by OOM killer.
 
 # Improvements
