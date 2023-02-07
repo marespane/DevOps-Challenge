@@ -46,7 +46,7 @@ ingress:
     production: example.com
 
 java:
-  _default: "-server -Xms512m -Xmx512m -XX:MetaspaceSize=196M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman --add-exports=java.base/sun.nio.ch=ALL-UNNAMED --add-exports=jdk.unsupported/sun.misc=ALL-UNNAMED --add-exports=jdk.unsupported/sun.reflect=ALL-UNNAMED -Djava.awt.headless=true -Djboss.default.jgroups.stack=kubernetes -Djboss.node.name=${POD_NAME} -Djboss.tx.node.id=${POD_NAME} -Djboss.site.name=${POD_NAMESPACE} -Dkeycloak.profile.feature.admin_fine_grained_authz=enabled -Dkeycloak.profile.feature.token_exchange=enabled -Djboss.as.management.blocking.timeout=3600"
+  _default: "-server -Xms512m -Xmx512m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman --add-exports=java.base/sun.nio.ch=ALL-UNNAMED --add-exports=jdk.unsupported/sun.misc=ALL-UNNAMED --add-exports=jdk.unsupported/sun.reflect=ALL-UNNAMED -Djava.awt.headless=true -Djboss.default.jgroups.stack=kubernetes -Djboss.node.name=${POD_NAME} -Djboss.tx.node.id=${POD_NAME} -Djboss.site.name=${POD_NAMESPACE} -Dkeycloak.profile.feature.admin_fine_grained_authz=enabled -Dkeycloak.profile.feature.token_exchange=enabled -Djboss.default.multicast.address=230.0.0.5 -Djboss.modcluster.multicast.address=224.0.1.106 -Djboss.as.management.blocking.timeout=3600"
   production: "-server -Xms1024m -Xmx2048m -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Djava.net.preferIPv4Stack=true -Djboss.modules.system.pkgs=org.jboss.byteman -Djava.awt.headless=true  --add-exports=java.base/sun.nio.ch=ALL-UNNAMED --add-exports=jdk.unsupported/sun.misc=ALL-UNNAMED --add-exports=jdk.unsupported/sun.reflect=ALL-UNNAMED  -Djboss.as.management.blocking.timeout=3600 -Djboss.default.jgroups.stack=kubernetes -Djboss.node.name=${POD_NAME} -Djboss.tx.node.id=${POD_NAME} -Djboss.site.name=${POD_NAMESPACE} -Dkeycloak.profile.feature.admin_fine_grained_authz=enabled -Dkeycloak.profile.feature.token_exchange=enabled -Djboss.default.multicast.address=230.0.0.5 -Djboss.modcluster.multicast.address=224.0.1.106"
 
   # Optionally override the fully qualified name
@@ -229,7 +229,7 @@ resources:
       memory: 1024Mi
     requests:
       cpu: 50m
-      memory: 512Mi
+      memory: 1024Mi
   stand:
     limits:
       memory: 1024Mi

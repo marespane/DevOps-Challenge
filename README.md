@@ -25,7 +25,7 @@ k delete po keycloak-0
 ```
 
 
-# Issues that i encountered
+# Encountered difficulties
 * Certificates issue with Cockroachdb 
 * Cockroachdb doesn't work with Infinispan due to "unauthorized to access tenant"
   * Tried different versions of Cockroachdb and drivers

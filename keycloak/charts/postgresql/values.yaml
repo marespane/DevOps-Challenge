@@ -26,7 +26,7 @@ global:
     ##
     auth:
       postgresPassword: "SKEm7XKaDV"
-      username: "keycloak"
+      username: ""
       password: ""
       database: "keycloak"
       existingSecret: ""
