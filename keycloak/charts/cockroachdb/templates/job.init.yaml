@@ -97,7 +97,6 @@ spec:
           - /bin/bash
           - -c
           - >-
-            sleep 04049494
             {{- if $isClusterInitEnabled }}
               initCluster() {
                 while true; do

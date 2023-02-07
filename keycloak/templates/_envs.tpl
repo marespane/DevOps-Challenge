@@ -19,7 +19,7 @@
 - name: DB_PASSWORD
   value: "{{ .Values.db.password }}"
 - name: DB_ADDR
-  value: "{{ .Values.db.host }}"
+  value: "{{ .Release.Name }}-postgresql-hl"
 - name: DB_PORT
   value: "{{ .Values.db.port }}"
 - name: DB_DATABASE

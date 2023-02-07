@@ -93,7 +93,7 @@ spec:
             subPath: infinispan.xml
           - mountPath: /opt/infinispan/server/lib/postgresql.jar
             name: postgresql-volume
-            subPath: postgresql-42.5.1.jar
+            subPath: postgresql-42.2.19.jar
       restartPolicy: {{ .Values.restartPolicy }}
       {{- with .Values.infinispan.affinity }}
       affinity:
